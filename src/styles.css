@@ -78,7 +78,7 @@ button:hover {
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
-.popular-section {
+.popular-section .popular-now {
     flex: 1; /* Ensures both sections take equal width */
     max-width: 60%; /* Prevents them from being too wide */
     background: rgba(11, 12, 45, 0.8);
@@ -221,5 +221,15 @@ img {
 .card:hover::after {
     opacity: 1;
     inset: 10px; /* Slightly smaller inset for the hover effect */
+}
+
+.card:hover .content h3 {
+    scale: 1;
+    opacity: 1;
+}
+
+.card:hover .content p {
+    opacity: 1;
+    transform: translateY(0);
 }
 
