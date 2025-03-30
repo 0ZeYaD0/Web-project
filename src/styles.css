@@ -88,11 +88,17 @@ button:hover {
     backdrop-filter: blur(5px);
 }
 
+/* Update popular-list to display items horizontally */
 .popular-list {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
 }
 
+/* For list items in popular-list */
 .popular-list li {
     position: relative;
     display: flex;
@@ -104,12 +110,14 @@ button:hover {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
-    margin-bottom: 20px; /* Adds spacing between list items */
+    margin-bottom: 20px;
+    width: calc(33% - 20px); /* Makes 3 items per row */
 }
 
+/* Make images in list items consistent */
 .popular-list li img {
     width: 100%;
-    height: auto;
+    height: 200px;
     object-fit: cover;
     transition: 0.5s ease-in-out;
 }
@@ -145,18 +153,20 @@ button:hover {
 }
 
 img {
-    max-width: 40%;
+    max-width: 85%;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
+/* Update card styling for horizontal layout */
 .card {
-    width: 40%;
-    aspect-ratio: 1 / 0.7;
+    width: calc(33% - 20px); /* Creates 3 cards per row with spacing */
+    aspect-ratio: 1 / 1.2;
     border-radius: 8px;
     position: relative;
-    overflow: hidden; /* Ensures content stays within the card */
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .card .image-box img {
@@ -231,5 +241,16 @@ img {
 .card:hover .content p {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Add footer styling */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+    background: rgba(11, 12, 45, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 100%;
 }
 
