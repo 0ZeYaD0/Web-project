@@ -1,504 +1,1822 @@
+/* styles.css */
+
+/* Base Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Consider a more modern font stack if appropriate */
 }
 
+/* Body Styling */
 body {
-    background: radial-gradient(circle, #261FB3 0%, #161179 50%, #0C0950 100%);
+    background: var(--bg-color);
     min-height: 100vh;
-    color: #ffffff;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Specific transitions */
 }
 
+/* Navigation Bar */
 nav {
+    position: sticky; /* Keeps nav at the top on scroll */
+    top: 0;
     display: flex;
     justify-content: space-between;
-    padding: 20px 50px;
-    background: #0B0C2D;
+    align-items: center;
+    padding: 0 50px; /* Horizontal padding */
+    background: var(--nav-bg);
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    z-index: 100; /* Ensures nav stays above other content */
+    height: 45px; /* Fixed height for the navbar */
+}
+
+nav > div { /* Direct children of nav involved in layout */
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 nav a {
     text-decoration: none;
-    color: #ffffff;
-    margin: 0 15px;
+    color: #ffffff; /* Default link color in nav, consider var(--nav-text) if it's always white */
+    margin: 0 15px; /* Spacing between nav links */
     transition: color 0.3s ease;
+    font-size: 0.95em;
+    display: flex; /* For vertical alignment if icons are used */
+    align-items: center;
+    height: 100%;
 }
 
 nav a:hover {
-    color: #007bff;
+    color: #007bff; /* Standard hover color, consider var(--primary-accent-color) */
 }
 
-.auth-links {
-    margin-left: auto;
+.auth-links { /* Container for authentication links */
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: auto; /* Pushes auth links to the right */
 }
 
+/* Main Content Area */
 main {
-    text-align: center;
-    padding: 100px 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    text-align: center; /* Centers inline/inline-block children like h1 */
+    padding: 50px 20px; /* Vertical and horizontal padding */
+    max-width: 1400px; /* Constrains content width for larger screens */
+    margin: 0 auto; /* Centers the main block */
 }
 
+/* Headings */
 h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-size: 3.5em;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    position: relative; /* For pseudo-elements if added later */
+    display: inline-block; /* To respect text-align: center on parent */
+    color: var(--text-color);
 }
+
+/* Removed h1::after { content: none; } as it's the default */
 
 h2 {
-    color: #ffffff;
+    color: var(--text-color);
     margin-bottom: 30px;
-    font-size: 1.8em;
+    font-size: 2em;
+    position: relative;
+    display: inline-block;
 }
 
+/* Removed h2::after { content: none; } */
+
+.popular-section h2 { /* Section Subheadings */
+    text-align: left;
+    width: 100%;
+    margin-bottom: 25px;
+    color: var(--text-color);
+    font-size: 1.6em;
+    display: flex; /* For icon alignment if added */
+    align-items: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+    position: relative;
+}
+
+/* Removed .popular-section h2::after { content: none; } */
+
+/* Buttons */
 button {
-    background: linear-gradient(45deg, #261FB3, #007bff);
+    /* Using local custom properties for button styling */
+    --button-padding-x: 40px;
+    --button-padding-y: 15px;
+    --button-radius: 30px;
+
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: white;
     border: none;
-    padding: 15px 40px;
+    padding: var(--button-padding-y) var(--button-padding-x);
     font-size: 1.1em;
-    border-radius: 30px;
+    border-radius: var(--button-radius);
     cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(38,31,179,0.4);
+    margin-top: 20px; /* Default top margin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition for hover effects */
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb, 38,31,179),0.4); /* Using primary color for shadow tint */
+    position: relative; /* For pseudo-elements */
+    overflow: hidden; /* To contain ::before element for shine effect */
+}
+
+/* Button shine effect */
+button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start off-screen */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease; /* Animate left property for shine movement */
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(38,31,179,0.6);
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb, 38,31,179),0.6);
 }
 
-.sections {
+button:hover::before {
+    left: 100%; /* Move shine effect across on hover */
+}
+
+/* Sections Layout */
+.sections { /* Container for multiple .popular-section elements */
     display: flex;
-    justify-content: space-between;
-    gap: 20px; /* Adds spacing between the two sections */
-    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
-}
-
-.popular-section .popular-now {
-    flex: 1; /* Ensures both sections take equal width */
-    max-width: 60%; /* Prevents them from being too wide */
-    background: rgba(11, 12, 45, 0.8);
-    padding: 25px;
-    border-radius: 15px;
-    margin: 10px 0; /* Adjusted margin for better spacing */
-    backdrop-filter: blur(5px);
-}
-
-/* Update popular-list to display items horizontally */
-.popular-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-/* For list items in popular-list */
-.popular-list li {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease;
-    margin-bottom: 20px;
-    width: calc(33% - 20px); /* Makes 3 items per row */
-}
-
-/* Make images in list items consistent */
-.popular-list li img {
+    flex-wrap: wrap; /* Allow sections to wrap on smaller screens */
+    justify-content: space-between; /* Distribute space */
+    gap: 40px; /* Space between sections */
     width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: 0.5s ease-in-out;
+    margin-top: 50px;
+    max-width: 1400px; /* Consistent with main content */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.popular-list li .content {
+.popular-section {
+    --section-radius: 15px; /* Local custom property for border-radius */
+
+    flex: 1; /* Allow sections to grow and shrink */
+    min-width: 300px; /* Minimum width before wrapping */
+    /* width: auto; Removed as flex:1 handles width distribution */
+    background: var(--card-bg); /* Themed background */
+    padding: 25px 30px;
+    border-radius: var(--section-radius);
+    box-shadow: var(--shadow); /* Themed shadow */
+    backdrop-filter: blur(5px); /* Frosted glass effect if bg is semi-transparent */
+    position: relative; /* For pseudo-elements and absolute positioned children */
+    overflow: visible; /* Default, but explicit if children need to overflow bounds */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px; /* Space below each section */
+}
+
+/* Decorative top border for sections */
+.popular-section::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    /* border-top-left-radius: var(--section-radius);
+    border-top-right-radius: var(--section-radius);
+    Consider adding if the line should follow the section's border radius */
+}
+
+.popular-section:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.section-header { /* Header within a .popular-section */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.view-all-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.view-all-link:hover {
+    transform: translateX(5px); /* Slight shift on hover */
+    opacity: 0.8;
+}
+
+.view-all-link::after { /* Arrow character */
+    content: "→";
+    margin-left: 5px;
+    transition: margin-left 0.3s ease;
+}
+
+.view-all-link:hover::after {
+    margin-left: 8px; /* Move arrow slightly further on hover */
+}
+
+.popular-list { /* Grid container for cards */
+    list-style: none; /* Remove default list styling */
+    padding: 15px 5px; /* Padding around the grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid columns */
+    gap: 25px; /* Space between cards */
+    width: 100%;
+    /* overflow-x: visible; overflow-y: visible; These are defaults */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    margin: 0; /* Reset margin */
+}
+
+/* Card Styling */
+.card {
+    width: 100%; /* Take full width of grid cell */
+    /* min-width: unset; Not needed with grid */
+    height: 340px; /* Fixed height for cards */
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden; /* Clip child elements like overflowing images or ::after border */
+    margin-bottom: 20px; /* Spacing if cards stack vertically (e.g., single column) */
+    box-shadow: var(--shadow);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth hover transition */
+    background: var(--card-bg);
+    /* transform: translateY(0); Default state */
+    cursor: pointer;
+    /* display: block !important; Handled by grid, !important removed */
+    z-index: 1; /* Default stacking context */
+    /* visibility: visible !important; opacity: 1 !important; Defaults, !important removed */
+    text-align: center; /* For fallback text in image-box if not flexed */
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02); /* Enhanced hover effect */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Darker, larger shadow on hover */
+    z-index: 2; /* Bring hovered card to the front */
+}
+
+img { /* General image styling */
+    max-width: 100%; /* Ensure images are responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Default border radius for images */
+    display: block; /* Remove extra space below inline images */
+}
+
+.card .image-box {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    position: relative; /* For positioning child img and ::before text */
+    overflow: hidden; /* Clip the image during zoom/pan effects */
+    display: flex; /* For centering fallback text */
     justify-content: center;
     align-items: center;
-    color: white;
-    background: rgba(0, 0, 0, 0.5); /* Optional overlay */
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out;
-    z-index: 1; /* Ensures the content is above the image */
-}
-
-.popular-list li:hover .content {
-    opacity: 1; /* Show content on hover */
-}
-
-.popular-list li:hover img {
-    filter: grayscale(1) brightness(0.4); /* Dim the image on hover */
-}
-
-.popular-list li h3,
-.popular-list li p {
-    margin: 5px 0;
-}
-
-img {
-    max-width: 85%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-/* Update card styling for horizontal layout */
-.card {
-    width: calc(33% - 20px); /* Creates 3 cards per row with spacing */
-    aspect-ratio: 1 / 1.2;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(30, 30, 60, 0.6), rgba(60, 60, 120, 0.3)); /* Placeholder background */
 }
 
 .card .image-box img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the card */
-    transition: 0.5s ease-in-out;
+    object-fit: cover; /* Ensure image covers the box, cropping if necessary */
+    transition: transform 0.4s ease;
+    /* display: block; Already set globally */
+    position: absolute; /* To be covered by content gradient and allow ::before to overlay */
+    z-index: 0; /* Behind .content */
 }
 
-.card .content {
+/* Fallback text for when image is missing but not yet error-styled by JS */
+.card .image-box::before {
+    content: attr(data-title); /* Display alt/title text */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    z-index: 0; /* Same level as img, will be hidden if img loads */
+    width: 80%;
+    opacity: 0; /* Hidden by default, shown by JS or if image fails badly */
+    /* transition: opacity 0.3s; For smoother appearance */
+}
+
+.card .image-box img.error-img + ::before, /* Show if JS adds error-img class */
+.card .image-box.img-error::before { /* Show if JS adds img-error to parent */
+    opacity: 1;
+    z-index: 1; /* Above potential broken image icon */
+}
+/* Hides the actual broken image if JS adds class */
+.card .image-box img.error-img {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.card .content {
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end; /* Align content (title, text) to the bottom */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.7) 30%,
+        rgba(0, 0, 0, 0.4) 60%,
+        rgba(0, 0, 0, 0.1) 100%); /* Gradient overlay for text readability */
     color: white;
-    background: rgba(0, 0, 0, 0.5); /* Optional: Adds a semi-transparent overlay */
-    text-align: center;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out;
-    z-index: 1; /* Ensures the content is above the image */
+    transition: background 0.4s ease, min-height 0.4s ease; /* Smooth transition for hover */
+    min-height: 100px; /* Ensure content area has enough space */
+    text-align: left; /* Align text to the left */
+    z-index: 2; /* Above image-box image */
 }
 
 .card:hover .content {
-    opacity: 1; /* Show content on hover */
+    /* Slightly darker/taller gradient on hover to make text pop more */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.3) 100%);
+    /* min-height: 120px; Example: expand content area on hover */
 }
 
-.card .content h2,
-.card .content p {
-    opacity: 0;
-}
-
-.card:hover .content h2,
-.card:hover .content p {
+.card .content h2 {
+    margin: 0 0 5px 0; /* Bottom margin */
+    font-size: 1.3em;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Readability */
+    /* opacity: 1 !important; color: white !important; display: block !important; Removed !important */
     opacity: 1;
-    margin: 5px 0;
-    z-index: 2; /* Ensures text is above the overlay */
-    transition: 0.4px ease-in-out;
+    color: white;
+    display: block;
+    text-align: left;
+    width: 100%;
+    pointer-events: none; /* Text itself is not interactive */
+    transition: transform 0.3s ease; /* For hover effect */
 }
 
+.card .content p {
+    margin: 0 0 5px 0; /* Consistent bottom margin */
+    font-size: 0.9em;
+    /* opacity: 0.8 !important; Removed !important */
+    opacity: 0.8;
+    transition: opacity 0.3s ease; /* Smooth opacity change on hover */
+    /* color: white !important; display: block !important; visibility: visible !important; Removed !important */
+    color: white;
+    display: block;
+    visibility: visible;
+    text-align: left;
+    width: 100%;
+    pointer-events: none;
+}
+
+.card:hover .content h2 {
+    transform: translateY(-5px); /* Lift title slightly on hover */
+}
+
+.card:hover .content p {
+    opacity: 1; /* Make paragraph fully opaque on hover */
+}
+
+/* Decorative border effect on card hover */
 .card::after {
     content: "";
     position: absolute;
-    inset: 5px; /* Adjusted to ensure the border is visible */
-    border: 2px solid white;
-    border-radius: inherit;
-    opacity: 0;
-    transition: 0.4s ease-in-out;
-}
-
-.card:hover img {
-    filter:
-        grayscale(1)
-        brightness(0.4);
+    inset: 0; /* Covers the entire card */
+    border: 2px solid transparent; /* Transparent border initially */
+    border-radius: inherit; /* Match card's border-radius */
+    pointer-events: none; /* Doesn't interfere with mouse events */
+    transition: border-color 0.5s ease, inset 0.5s ease; /* Smooth transition */
 }
 
 .card:hover::after {
-    opacity: 1;
-    inset: 10px; /* Slightly smaller inset for the hover effect */
+    border-color: var(--primary-color); /* Show border on hover */
+    inset: 10px; /* Inset border effect */
 }
 
-.card:hover .content h3 {
-    scale: 1;
+.category-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.8em;
+    font-weight: 600;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    z-index: 3; /* Above content and image */
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card:hover .category-tag {
+    transform: translateY(-3px); /* Slight lift */
     opacity: 1;
 }
 
-.card:hover .content p {
+/* Badges for additional information (e.g., new, top) */
+.badge {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 10px;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-right: 5px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.2); /* Default badge background */
+}
+
+.badge.new { background: #ff7eb9; color: white; }
+.badge.top { background: #ffb700; color: #333; }
+.badge.classic { background: #7eb6ff; color: white; }
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 80px; /* Space above footer */
+    background: var(--nav-bg); /* Consistent with nav */
+    color: var(--nav-text);
+    position: relative;
+}
+
+footer::before { /* Decorative top line */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+}
+
+footer p {
+    font-size: 1em;
+    opacity: 0.8; /* Slightly subdued text */
+}
+
+/* Login and Signup Forms */
+.login-container, .signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Ensure form is vertically centered on taller screens */
+    padding: 20px; /* Padding for smaller screens */
+    position: relative;
+}
+
+.login-form, .signup-form {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 450px; /* Max width for the form */
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* For ::before element */
+    backdrop-filter: blur(10px); /* If card-bg is semi-transparent */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form:hover, .signup-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.login-form::before, .signup-form::before { /* Decorative top line */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.login-form h2, .signup-form h2 { /* Form titles */
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-size: 2em;
+    position: relative;
+    display: inline-block; /* To center */
+}
+
+/* .login-form h2::after, .signup-form h2::after { content: none; } Removed as default */
+
+.login-form .form-group, .signup-form .form-group {
+    margin-bottom: 25px;
+    text-align: left; /* Align labels and inputs to the left */
+    position: relative; /* For error messages or icons if added */
+}
+
+.login-form label, .signup-form label {
+    display: block;
+    color: var(--text-color);
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.login-form label.focused-label, .signup-form label.focused-label { /* Class added by JS on input focus */
+    color: var(--primary-color);
+}
+
+.login-form input, .signup-form input { /* General input styling, excluding checkbox/radio/submit */
+    width: 100%;
+    padding: 15px;
+    border: none; /* Or 1px solid var(--border-color) */
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1em;
+    outline: none; /* Custom focus styling below */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent; /* Placeholder for focus border */
+}
+
+.login-form input:focus, .signup-form input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 98,0,234), 0.2); /* Focus ring using primary color */
+}
+
+.login-form .form-options, .signup-form .form-options { /* Container for "remember me" and "forgot password" */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.login-form .form-options a, .signup-form .form-options a,
+.login-form .signup-prompt a, .signup-form .login-prompt a { /* Links within forms */
+    color: var(--primary-color);
+    font-size: 0.9em;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* .login-form .form-options a::after ... { content: none; } Removed as default */
+
+.login-form .form-options a:hover, .signup-form .form-options a:hover,
+.login-form .signup-prompt a:hover, .signup-form .login-prompt a:hover {
+    color: var(--secondary-color);
+    /* text-decoration: underline; Consider for better affordance */
+}
+
+/* .login-form .form-options a:hover::after ... { width: 100%; } Removed, use text-decoration for underline */
+
+.remember-me label, .terms label { /* Labels for checkboxes */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between checkbox and text */
+    color: var(--text-color);
+    font-size: 0.9em;
+    cursor: pointer;
+    user-select: none; /* Prevent text selection on click */
+    margin-bottom: 0; /* Override default label margin */
+}
+
+.remember-me input[type="checkbox"], .terms input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color); /* Modern way to style checkbox color */
+    margin: 0; /* Reset default margin */
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+}
+
+.login-form button, .signup-form button { /* Submit buttons */
+    width: 100%;
+    padding: 15px; /* Already defined in global button, but can override */
+    /* Other styles inherited from global button, or can be specific here */
+}
+
+/* Form Validation Styling */
+.error-message { /* For messages below input fields */
+    color: #ff3860; /* Standard error color */
+    font-size: 0.875em; /* Slightly smaller than input text */
+    margin-top: 5px;
+    display: block;
+    /* animation: fadeIn 0.3s ease-in-out; Consider if subtle animation is desired */
+}
+
+/* Removed fadeIn animation for error messages by default, can be added if preferred */
+
+.terms.error label { /* Style for terms label when checkbox is required but not checked */
+    color: #ff3860;
+    /* animation: shake 0.5s ease-in-out; Consider for attention-grabbing effect */
+}
+
+/* Removed shake animation for terms error by default */
+
+/* Password Strength Meter */
+.password-strength {
+    margin-top: 15px;
+}
+
+.strength-meter {
+    height: 6px;
+    background-color: #e0e0e0; /* Neutral background */
+    border-radius: 3px;
+    margin-bottom: 8px;
+    overflow: hidden; /* To clip the fill */
+}
+
+.strength-meter-fill {
+    height: 100%;
+    border-radius: 3px; /* Match parent */
+    width: 0; /* Initial state */
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.strength-text {
+    font-size: 0.75em; /* Smaller text for strength indicator */
+    text-align: right;
+    color: var(--text-color);
+    opacity: 0.8;
+    transition: color 0.3s ease;
+}
+
+/* data-strength attributes are set by JS */
+.strength-meter-fill[data-strength="empty"]  { background-color: #e0e0e0; }
+.strength-meter-fill[data-strength="weak"]   { background-color: #ff3860; } /* Red */
+.strength-meter-fill[data-strength="medium"] { background-color: #ffdd57; } /* Yellow */
+.strength-meter-fill[data-strength="strong"] { background-color: #23d160; } /* Green */
+
+/* Manga Detail Page */
+.manga-detail-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.manga-detail {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden; /* Clip children */
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+}
+
+.manga-header {
+    padding: 30px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative; /* For overlay and content positioning */
+    background-size: cover; /* Ensure background image covers the area */
+    background-position: center;
+}
+
+.manga-header::before { /* Darkening overlay for text readability */
+    content: "";
+    position: absolute;
+    inset: 0; /* Cover entire header */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), var(--card-bg, rgba(0,0,0,0.9))); /* Blend into card background */
+    z-index: 1; /* Below text content */
+}
+
+.manga-header h1 {
+    margin: 0 0 15px 0;
+    color: white; /* Ensure contrast with dark overlay */
+    position: relative;
+    z-index: 2; /* Above overlay */
+    text-align: left;
+    font-size: 2.5em;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.manga-header h1::after { /* Decorative underline for title */
+    /* content: ""; Now handled by global h1 if needed, or specific style */
+    /* position: absolute; */
+    /* bottom: -5px; */
+    left: 0;
+    transform: none; /* Reset global h1::after if it centers */
+    width: 80px; /* Fixed width underline */
+    /* height: 3px; */
+    /* background: var(--primary-color); */
+}
+
+.manga-meta { /* Container for rating, genre, etc. */
+    display: flex;
+    gap: 20px;
+    position: relative;
+    z-index: 2; /* Above overlay */
+}
+
+.rating {
+    font-weight: bold;
+    color: #f5c518; /* Gold color for ratings */
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space for star icon if used */
+}
+
+.genre {
+    color: white;
+    opacity: 0.9;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.manga-content { /* Main content area below header */
+    display: flex;
+    padding: 30px;
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap; /* Allow image and info to stack on small screens */
+    gap: 30px;
+}
+
+.manga-image { /* Container for the manga cover image */
+    flex: 0 0 300px; /* Fixed width for the image, doesn't grow or shrink */
+    margin: 0 auto 20px; /* Center if stacked, bottom margin */
+    position: relative;
+    transform: translateY(-80px); /* Pull image up into the header area */
+    z-index: 3; /* Above header content but below nav if scrolling */
+    text-align: center; /* For image centering if not 100% width */
+}
+
+.manga-image img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    margin: 0 auto; /* Ensure centering if width is less than container */
+}
+
+.manga-image img:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+}
+
+.manga-info { /* Container for synopsis, details, etc. */
+    flex: 1; /* Takes remaining space */
+    min-width: 300px; /* Minimum width before wrapping */
+    /* width: auto; Handled by flex */
+}
+
+.info-section { /* Generic section within manga-info (e.g., Synopsis, Details) */
+    margin-bottom: 40px;
+}
+
+.info-section h3 { /* Subheadings within manga-info */
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+    display: inline-block; /* So border-bottom only spans text width */
+    font-size: 1.3em;
+}
+
+.manga-details { /* List for status, volumes, author, etc. */
+    list-style: none;
+    padding: 0;
+}
+
+.manga-details li {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow label and value to stack if needed */
+}
+
+.manga-details li:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+.manga-details li strong { /* Label part (e.g., "Status:") */
+    color: var(--primary-color);
+    min-width: 100px; /* Ensure alignment */
+}
+
+.read-links { /* Container for "Read Online", "Buy" buttons */
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.read-btn, .buy-btn { /* Common styling for action buttons */
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+    overflow: hidden; /* For shine effect */
+}
+
+.read-btn::before, .buy-btn::before { /* Shine pseudo-element */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.read-btn:hover::before, .buy-btn:hover::before {
+    left: 100%;
+}
+
+.read-btn { /* Primary action button */
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb, 98,0,234), 0.3);
+}
+
+.read-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb, 98,0,234), 0.5);
+}
+
+.buy-btn { /* Secondary action button (outlined) */
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.buy-btn:hover {
+    background: rgba(var(--primary-rgb, 98,0,234), 0.1); /* Slight background fill on hover */
+    transform: translateY(-3px);
+}
+
+.manga-chapters { /* Section for chapter list */
+    padding: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.manga-chapters h3 {
+    text-align: left;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.manga-chapters h3::after { /* Underline for chapter section title */
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+.chapter-list {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background: rgba(0, 0, 0, 0.1); /* Subtle background for each item */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    flex-wrap: wrap; /* Allow items to wrap on small screens */
+}
+
+.chapter-item:hover {
+    background: rgba(var(--primary-rgb, 98,0,234), 0.1); /* Themed hover background */
+    transform: translateX(5px); /* Slight shift */
+}
+
+.chapter-number {
+    font-weight: bold;
+    min-width: 120px; /* Alignment */
+    color: var(--primary-color);
+}
+
+.chapter-title {
+    flex: 1; /* Take available space */
+    margin: 0 15px; /* Spacing */
+}
+
+.chapter-date {
+    color: var(--text-color);
+    opacity: 0.7; /* Subdued */
+    margin-right: 15px;
+}
+
+.read-chapter-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.read-chapter-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--primary-rgb, 98,0,234), 0.3);
+}
+
+.manga-related { /* Section for related manga */
+    padding: 30px;
+}
+
+.manga-related h3 {
+    text-align: left;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.manga-related h3::after { /* Underline */
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+.related-manga { /* Container for related manga cards */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 20px;
+    justify-content: center; /* Center cards if they don't fill the row */
+}
+
+.related-card {
+    flex: 0 0 calc(20% - 25px); /* Aim for 5 cards per row, accounting for gap */
+    min-width: 140px; /* Minimum width before wrapping to fewer cards */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: rgba(0, 0, 0, 0.1);
+    text-align: center;
+    /* margin: 0 auto; Not needed with flex justify-content */
+    position: relative; /* For absolute positioning of title */
+}
+
+.related-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.related-image { /* Image container within related card */
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.related-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    /* margin: 0 auto; Not needed if width is 100% */
+}
+
+.related-card:hover .related-image img {
+    transform: scale(1.1); /* Zoom effect on hover */
+}
+
+.related-card h4 { /* Title for related card */
+    margin: 0;
+    padding: 10px;
+    font-size: 0.875em; /* 14px equivalent if base is 16px */
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for title */
+    color: white;
+    position: absolute; /* Position at the bottom of .related-card */
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.loading-text, .chapter-loading, .no-chapters { /* Placeholder text for loading states or empty lists */
+    color: var(--text-color);
+    opacity: 0.7;
+    text-align: center;
+    padding: 30px;
+    font-style: italic;
+}
+
+/* Animations */
+.card-animated { /* Base class for cards that will be animated on scroll */
+    /* Start visible and at final position if JS doesn't hide it initially */
+    opacity: 1;
+    transform: translateY(0);
+    /* transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); */
+    /* visibility: visible !important; Removed, should be default */
+}
+
+/* Class added by IntersectionObserver when element is in view */
+.card-animated.animate-in {
+    /* These are the target states, often the default unless JS sets initial opacity to 0 */
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Add footer styling */
-footer {
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
-    background: rgba(11, 12, 45, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    width: 100%;
+@keyframes floatAnimation {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); } /* Adjust float height */
+    100% { transform: translateY(0); }
 }
-/* Login Page Styling */
-.login-container {
+
+.floating { /* Applied to elements for a gentle floating effect */
+    animation: floatAnimation 3s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInAnimation { /* Renamed to avoid conflict with .error-message keyframe */
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in { /* For general fade-in effect on elements */
+    animation: fadeInAnimation 1s ease-in-out;
+}
+
+@keyframes slideInLeftAnimation { /* Renamed */
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in-left { /* Class for elements sliding in from the left */
+    /* opacity: 0; Initial state handled by animation if applied dynamically by JS */
+    animation: slideInLeftAnimation 0.5s ease-out forwards; /* Use forwards to keep end state */
+}
+
+@keyframes slideInRightAnimation { /* Renamed */
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in-right { /* Class for elements sliding in from the right */
+    /* opacity: 0; Initial state */
+    animation: slideInRightAnimation 0.5s ease-out forwards;
+}
+
+@keyframes pulseAnimation { /* Renamed */
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); } /* Adjust pulse size */
+    100% { transform: scale(1); }
+}
+
+.pulse { /* Class for a pulsing effect, e.g., on buttons */
+    animation: pulseAnimation 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    main {
+        padding: 40px 20px; /* Reduced padding */
+    }
+
+    .sections {
+        gap: 30px; /* Reduced gap between sections */
+    }
+
+    .related-card {
+        flex-basis: calc(25% - 20px); /* Adjust for 4 cards, new gap */
+        /* Assuming gap will also be adjusted for .related-manga */
+    }
+
+    .popular-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    h1 { font-size: 3em; }
+
+    .slideshow { height: 400px; }
+    .slide-content h2 { font-size: 2em; }
+    .slide-content p { font-size: 1em; }
+
+    .related-card {
+        flex-basis: calc(33.33% - 18px); /* Adjust for 3 cards */
+    }
+
+    .manga-image {
+        transform: translateY(-50px); /* Less offset */
+    }
+
+    .popular-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 0 20px; /* Reduce padding on mobile */
+    }
+
+    nav > div:first-child { /* Hide main nav links */
+        display: none !important; /* Force hide on mobile */
+    }
+    
+    .hamburger { /* Show hamburger menu icon */
+        display: flex !important; /* Force show on mobile */
+        z-index: 1001; /* Above side-menu for the X state */
+    }
+    
+    .theme-toggle { /* Ensure it's positioned correctly */
+        margin-left: auto; /* Push to right edge */
+    }
+
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 1.8em; }
+
+    .slideshow { height: 350px; margin: 20px 0; }
+    .popular-section { padding: 20px; }
+
+    /* .card, .popular-list li { width: 240px; min-width: 240px; } Grid handles width */
+
+    .manga-content {
+        flex-direction: column; /* Stack image and info */
+        padding: 20px;
+    }
+
+    .manga-image {
+        /* margin-right: 0; Not needed with flex-direction: column */
+        max-width: 250px; /* Constrain image size */
+        margin: 0 auto 20px; /* Center and add bottom margin */
+        transform: translateY(-40px);
+    }
+
+    .manga-header h1 {
+        font-size: 2em;
+        text-align: center; /* Center title */
+    }
+    .manga-meta {
+        justify-content: center; /* Center meta items */
+    }
+    .manga-header h1::after { /* Center underline */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .chapter-item {
+        flex-direction: column; /* Stack chapter details */
+        align-items: flex-start; /* Align to left */
+        padding: 15px;
+    }
+    .chapter-title, .chapter-date, .read-chapter-btn {
+        margin: 5px 0; /* Vertical spacing */
+    }
+
+    .related-card {
+        flex-basis: calc(50% - 10px); /* 2 cards per row */
+    }
+
+    .popular-list {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .card .content { min-height: 90px; padding: 10px; }
+    .card .content h2 { font-size: 1.1em; }
+    .card .content p { font-size: 0.8em; }
+    .card { height: 280px; }
+}
+
+@media (max-width: 576px) {
+    h1 { font-size: 2em; }
+    .login-form, .signup-form { padding: 30px 20px; }
+
+    .slideshow { height: 300px; }
+    .slide-content { padding: 20px; }
+    .slide-content h2 { font-size: 1.5em; }
+
+    /* .popular-list { flex-direction: column; } Already grid, this would break it */
+    /* .card, .popular-list li { width: 200px; min-width: 200px; margin-bottom: 20px; } Grid handles sizing */
+
+    .manga-detail { border-radius: 15px; }
+    .manga-header { padding: 20px; }
+    .manga-image { transform: translateY(-30px); }
+
+    .read-links { flex-direction: column; gap: 10px; }
+
+    .related-card {
+        flex-basis: 100%; /* 1 card per row */
+        max-width: 300px; /* But not too wide */
+        margin-left: auto; /* Center if max-width is hit */
+        margin-right: auto;
+    }
+    .card { height: 230px; }
+}
+
+/* Theme System */
+:root {
+    /* Define RGB components for easier use in rgba() if primary color changes */
+    --primary-rgb: 98, 0, 234; /* Corresponds to #6200ea */
+    --secondary-rgb: 55, 0, 179; /* Corresponds to #3700b3 */
+    --text-rgb: 255, 255, 255; /* For the default theme text */
+
+    --primary-color: #6200ea;
+    --secondary-color: #3700b3;
+    --text-color: #fff;
+    --bg-color: radial-gradient(circle, #261FB3 0%, #161179 50%, #0C0950 100%); /* Default/Initial Theme */
+    --card-bg: rgba(11, 12, 45, 0.8);
+    --nav-bg: #0B0C2D;
+    --nav-text: #fff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.1);
+    /* --btn-hover: #3700b3; This can be derived from secondary-color */
+    /* --card-opacity: 1 !important; --content-opacity: 1 !important; Removed, should be default */
+}
+
+body[data-theme="light"] {
+    --primary-rgb: 98, 0, 234;
+    --secondary-rgb: 55, 0, 179;
+    --text-rgb: 51, 51, 51; /* dark text */
+    --primary-color: #6200ea;
+    --secondary-color: #3700b3;
+    --text-color: #333333; /* Darker text for light background */
+    --bg-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    --card-bg: white;
+    --nav-bg: #6200ea; /* Primary color for nav background */
+    --nav-text: white;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    --border-color: #e0e0e0;
+    --input-bg: #f5f5f5;
+}
+
+body[data-theme="dark"] {
+    --primary-rgb: 187, 134, 252; /* Corresponds to #bb86fc */
+    --secondary-rgb: 55, 0, 179;
+    --text-rgb: 224, 224, 224; /* light text */
+    --primary-color: #bb86fc; /* Lighter purple for dark theme */
+    --secondary-color: #3700b3; /* Kept original, or could be a lighter variant */
+    --text-color: #e0e0e0; /* Light gray text */
+    --bg-color: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* Dark gradient */
+    --card-bg: #1e1e1e; /* Dark card background */
+    --nav-bg: #1e1e1e;
+    --nav-text: #f5f5f5;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* More prominent shadow */
+    --border-color: #333333; /* Darker border */
+    --input-bg: #2a2a2a; /* Dark input background */
+}
+
+body[data-theme="kawaii"] {
+    --primary-rgb: 255, 126, 185; /* Corresponds to #ff7eb9 */
+    --secondary-rgb: 126, 182, 255; /* Corresponds to #7eb6ff */
+    --text-rgb: 95, 75, 139; /* dark purple text */
+    --primary-color: #ff7eb9; /* Pink */
+    --secondary-color: #7eb6ff; /* Light Blue */
+    --text-color: #5f4b8b; /* Dark Purple text */
+    --bg-color: linear-gradient(to bottom, #fef9ff, #ffd6f3); /* Light pink gradient */
+    --card-bg: white;
+    --nav-bg: #ff7eb9; /* Primary pink for nav */
+    --nav-text: white;
+    --shadow: 0 4px 15px rgba(255, 126, 185, 0.2); /* Pinkish shadow */
+    --border-color: #ffadd6;
+    --input-bg: #fff0f7; /* Very light pink input */
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    position: relative; /* For positioning icons inside */
+    width: 28px; /* Fixed size */
+    height: 28px;
+    min-width: 28px; /* Prevent shrinking */
+    min-height: 28px;
+    border-radius: 50%; /* Circular button */
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle border */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
-    padding: 20px;
+    cursor: pointer;
+    overflow: hidden; /* Clip icons during transition */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    margin: 0 15px 0 0; /* Spacing */
+    padding: 0; /* Reset padding */
 }
 
-.login-form {
-    background: rgba(11, 12, 45, 0.9);
-    padding: 40px 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+.theme-icon { /* Icons within the toggle button */
+    position: absolute; /* Stack icons */
+    font-size: 1em; /* 16px if base is 16px */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0; /* Hidden by default */
+    transform: translateY(20px); /* Start off-button */
 }
 
-.login-form h2 {
-    color: #ffffff;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+.theme-icon.active { /* Active icon slides into view */
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.login-form .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+/*
+   The following specific theme icon visibility rules are slightly redundant if JS
+   correctly adds/removes .active class. Keeping them as a fallback or explicit styling.
+*/
+body[data-theme="light"] .theme-icon.light,
+body[data-theme="dark"] .theme-icon.dark,
+body[data-theme="kawaii"] .theme-icon.kawaii {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.login-form label {
-    display: block;
-    color: #ffffff;
-    font-size: 0.9em;
-    margin-bottom: 5px;
+#theme-toggle:hover {
+    transform: rotate(15deg); /* Fun rotation on hover */
+    border-color: rgba(255, 255, 255, 0.7); /* Brighter border */
 }
 
-.login-form input {
-    width: 100%;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 1em;
-    outline: none;
+/* Card Hover Effects (Refined) */
+.card:hover .image-box img {
+    transform: scale(1.1) rotate(1deg); /* Zoom and slight rotation */
+    filter: brightness(1.1); /* Slightly brighten image */
+}
+
+/* .card .content { ... } - Already defined earlier, ensure consistency */
+/* .card:hover .content { ... } - Already defined earlier */
+
+
+/* Side Menu (Mobile Navigation) */
+.hamburger {
+    display: none; /* Hidden on desktop by default */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    margin-right: 15px;
     transition: all 0.3s ease;
 }
 
-.login-form input:focus {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 8px rgba(38, 31, 179, 0.5);
+.hamburger span { /* Bars of the hamburger */
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
 }
 
-.login-form .form-options {
+body.menu-open .hamburger span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg); /* Adjusted translate */
+}
+body.menu-open .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+body.menu-open .hamburger span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg); /* Adjusted translate */
+}
+
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Start off-screen */
+    width: 300px; /* Width of the menu */
+    height: 100%;
+    background-color: var(--card-bg); /* Themed background */
+    box-shadow: var(--shadow);
+    z-index: 1000; /* Below hamburger X, but above main content */
+    transition: left 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0); /* Smooth slide-in */
+    overflow: hidden; /* If content inside might overflow before scrolling enabled */
+}
+
+.side-menu.open {
+    left: 0; /* Slide into view */
+    backdrop-filter: blur(5px); /* Apply blur when open if card-bg is transparent */
+}
+
+.side-menu-content {
+    padding: 30px 20px;
+    height: 100%;
+    overflow-y: auto; /* Enable scrolling if content exceeds height */
+    position: relative;
+}
+
+body.menu-open { /* Prevent body scrolling when menu is open */
+    overflow: hidden;
+}
+
+.side-menu .close-menu {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    box-shadow: none;
+    margin: 0;
+}
+
+.side-menu h2 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    font-size: 1.8em;
+    text-align: center;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-menu li {
+    margin: 15px 0;
+}
+
+.side-menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.side-menu a:hover {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+.menu-divider {
+    height: 1px;
+    background-color: rgba(var(--text-rgb), 0.1);
+    margin: 20px 0;
+}
+
+/* Slideshow Styling */
+.slideshow {
+    position: relative;
+    margin: 30px 0; /* Vertical margin */
+    height: 500px; /* Default height */
+    overflow: hidden; /* Clip slides */
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    z-index: 1; /* Default stacking, ensure it's above static bg elements */
+}
+
+.slides { /* Container for individual .slide elements */
+    width: 100%;
+    height: 100%;
+    position: relative; /* For absolute positioning of slides */
+    /* z-index: 1; Usually not needed, .slide handles it */
+}
+
+.slide {
+    position: absolute;
+    inset: 0; /* Cover entire .slides container */
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.8s ease; /* Fade transition */
+    display: flex; /* For aligning .slide-content */
+    align-items: flex-end; /* Align content to bottom */
+    /* z-index: 1; Can be managed by .active */
+}
+
+.slide.active {
+    opacity: 1; /* Show active slide */
+    z-index: 2; /* Ensure active slide is on top */
+    /* animation: kenburns 20s ease-in-out infinite alternate; Consider if Ken Burns is too much or distracting */
+}
+
+/* Ken Burns effect for active slide image */
+/*
+@keyframes kenburns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+.slide.active img {
+    animation: kenburns 20s ease-in-out infinite alternate;
+}
+*/
+/* Simpler approach: apply Ken Burns directly to active slide's image if desired */
+
+
+.slide img { /* Image within a slide */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the slide area */
+    z-index: 1; /* Behind .slide-content */
+}
+
+.slide-content { /* Text content within a slide */
+    position: relative; /* To be above img */
+    z-index: 2; /* Above image */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent); /* Gradient for readability */
+    color: white;
+    padding: 40px;
+    width: 100%;
+    /* transform: translateY(0); Set by animation */
+    opacity: 0; /* Start hidden for animation */
+    /* transition: opacity 0.5s ease; Handled by animation */
+}
+
+.slide.active .slide-content {
+    animation: fadeInUpAnimation 0.8s ease forwards; /* Use "forwards" to maintain end state */
+}
+
+@keyframes fadeInUpAnimation { /* Renamed */
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Page Loader / Spinner */
+#page-loader {
+    position: fixed;
+    inset: 0; /* Cover entire viewport */
+    background-color: var(--bg-color); /* Use themed background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Highest z-index */
+    transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade out */
+}
+
+#page-loader.loaded { /* Class added by JS when loading is complete */
+    opacity: 0;
+    visibility: hidden; /* Ensure it's not interactable */
+}
+
+#page-loader p { /* Text below spinner */
+    margin-top: 15px;
+    font-size: 1.125em; /* 18px if base is 16px */
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(var(--primary-rgb, 98,0,234), 0.2); /* Use primary color for transparent part */
+    border-radius: 50%;
+    border-top-color: var(--primary-color); /* Solid part of spinner */
+    animation: spinAnimation 1s linear infinite; /* Renamed, linear is common for spinners */
+}
+
+@keyframes spinAnimation { /* Renamed */
+    to { transform: rotate(360deg); }
+}
+
+/* Scroll Navigation Buttons (for horizontal scroll sections) */
+.scroll-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; /* Adjust size as needed */
+    height: 30px;
+    background-color: rgba(var(--primary-rgb, 98,0,234), 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875em; /* 14px */
+    cursor: pointer;
+    z-index: 10; /* Above cards in the scrollable list */
+    opacity: 0.6; /* Slightly transparent by default */
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-nav:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1); /* Slight scale and lift */
+    background-color: var(--primary-color); /* Solid color on hover */
+}
+
+.scroll-left { left: 5px; } /* Position left button */
+.scroll-right { right: 5px; } /* Position right button */
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0; /* Hidden by default */
+    transform: translateY(20px); /* Start off-screen for slide-in */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    font-size: 1.25em; /* 20px */
+    z-index: 99; /* Above most content */
+    padding: 0; /* Reset padding if button element has global padding */
+}
+
+#back-to-top.visible { /* Class added by JS when scrolled enough */
+    opacity: 0.8;
+    transform: translateY(0); /* Slide into view */
+}
+
+#back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+/* Spotlight effect on card hover (Image Box) */
+.card .image-box:hover::after { /* Apply to image-box to contain within its bounds */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(var(--primary-rgb,98,0,234), 0.1), transparent 70%);
+    z-index: 1; /* Above image, below content if content overlaps */
+    pointer-events: none; /* Allow interaction with elements below */
+    border-radius: inherit; /* If image-box has rounded corners */
+}
+
+/* Ensure responsive media queries are at the end to override base styles correctly */
+/* (Media queries from original file are largely fine, minor adjustments made above for consistency) */
+
+/* Anime detail styles (building on manga styles) */
+.anime-detail {
+    /* Inherits from .manga-detail */
+}
+
+.anime-header {
+    /* Inherits from .manga-header */
+    background-size: cover;
+    background-position: center;
+}
+
+.anime-meta {
+    /* Inherits from .manga-meta */
+}
+
+.anime-content {
+    /* Inherits from .manga-content */
+}
+
+.anime-image {
+    /* Inherits from .manga-image */
+}
+
+.anime-info {
+    /* Inherits from .manga-info */
+}
+
+.anime-details {
+    /* Inherits from .manga-details */
+}
+
+.anime-episodes {
+    /* Inherits from .manga-chapters */
+}
+
+.anime-episodes h3::after {
+    /* Inherits from .manga-chapters h3::after */
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.episode-list {
+    /* Inherits from .chapter-list */
+}
+
+.episode-item {
+    /* Inherits from .chapter-item */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.login-form .form-options a {
-    color: #007bff;
-    font-size: 0.9em;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.login-form .form-options a:hover {
-    color: #0056b3;
-}
-
-.login-form button {
-    width: 100%;
-    padding: 12px 20px;
-    background: linear-gradient(45deg, #261FB3, #007bff);
-    color: white;
-    border: none;
+    background: var(--card-bg);
+    margin-bottom: 10px;
+    padding: 15px;
     border-radius: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(38, 31, 179, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s ease;
 }
 
-.login-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(38, 31, 179, 0.6);
+.episode-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    background: rgba(var(--primary-rgb), 0.1); /* Match chapter-item hover background */
 }
 
-.login-form .signup-prompt {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #ffffff;
+.episode-number {
+    /* Inherits from .chapter-number */
+    font-weight: bold;
+    width: 120px;
 }
 
-.login-form .signup-prompt a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s ease;
+.episode-title {
+    /* Inherits from .chapter-title */
+    flex-grow: 1;
+    text-align: left;
 }
 
-.login-form .signup-prompt a:hover {
-    color: #0056b3;
-}
-
-.remember-me label {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Adds spacing between the checkbox and text */
-    color: #ffffff;
-    font-size: 0.9em;
-    cursor: pointer;
-}
-
-.remember-me input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-/* Signup Page Styling */
-.signup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
-}
-
-.signup-form {
-    background: rgba(11, 12, 45, 0.9);
-    padding: 40px 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 400px;
+.episode-date {
+    /* Inherits from .chapter-date */
+    color: rgba(var(--text-rgb, 255, 255, 255), 0.7);
+    width: 120px;
     text-align: center;
 }
 
-.signup-form h2 {
-    color: #ffffff;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.signup-form .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.signup-form label {
-    display: block;
-    color: #ffffff;
-    font-size: 0.9em;
-    margin-bottom: 5px;
-}
-
-.signup-form input {
-    width: 100%;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 1em;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.signup-form input:focus {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 8px rgba(38, 31, 179, 0.5);
-}
-
-.signup-form .form-options {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.signup-form .form-options .terms {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #ffffff;
-    font-size: 0.9em;
-}
-
-.signup-form .form-options .terms a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.signup-form .form-options .terms a:hover {
-    color: #0056b3;
-}
-
-.signup-form .form-options .terms label {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Adds spacing between the checkbox and text */
-    color: #ffffff;
-    font-size: 0.9em;
-    cursor: pointer;
-}
-
-.signup-form .form-options .terms input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.signup-form button {
-    width: 100%;
-    padding: 12px 20px;
-    background: linear-gradient(45deg, #261FB3, #007bff);
+.watch-episode-btn {
+    /* Inherits from .read-chapter-btn */
+    background: var(--primary-color);
     color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(38, 31, 179, 0.4);
-}
-
-.signup-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(38, 31, 179, 0.6);
-}
-
-.signup-form .login-prompt {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #ffffff;
-}
-
-.signup-form .login-prompt a {
-    color: #007bff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.3s;
     text-decoration: none;
-    transition: color 0.3s ease;
+    width: 70px;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
 }
 
-.signup-form .login-prompt a:hover {
-    color: #0056b3;
+.watch-episode-btn:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
 }
 
+.anime-related {
+    /* Inherits from .manga-related */
+}
+
+.anime-related h3::after {
+    /* Inherits from .manga-related h3::after */
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.related-anime {
+    /* Inherits from .related-manga */
+}
+
+.watch-links {
+    /* Inherits from .read-links */
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.watch-btn {
+    /* Inherits from .read-btn */
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+}
+
+.watch-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.5);
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animanga - Anime Detail</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="visibility-fix.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="page-loader">
+        <div class="spinner"></div>
+        <p>Loading Anime Details...</p>
+    </div>
+
+    <nav>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="anime.html">Anime</a>
+            <a href="manga.html">Manga</a>
+        </div>
+        <div class="auth-links">
+            <button id="theme-toggle" aria-label="Toggle theme">
+                <span class="theme-icon light">☀️</span>
+                <span class="theme-icon dark">🌙</span>
+                <span class="theme-icon kawaii">🌸</span>
+            </button>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="manga-detail-container">
+            <div class="manga-detail anime-detail">
+                <div class="manga-header anime-header">
+                    <h1 id="anime-title">Loading anime details...</h1>
+                    <div class="manga-meta anime-meta">
+                        <span class="rating" id="anime-rating">⭐ 0.0</span>
+                        <span class="genre" id="anime-genre">Unknown</span>
+                    </div>
+                </div>
+                
+                <div class="manga-content anime-content">
+                    <div class="manga-image anime-image">
+                        <img id="anime-image" src="../Res/Animepics/placeholder.jpg" alt="Anime Cover">
+                    </div>
+                    
+                    <div class="manga-info anime-info">
+                        <div class="info-section">
+                            <h3>Synopsis</h3>
+                            <p id="anime-synopsis">Loading synopsis...</p>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3>Details</h3>
+                            <ul class="manga-details anime-details">
+                                <li><strong>Status:</strong> <span id="anime-status">Unknown</span></li>
+                                <li><strong>Episodes:</strong> <span id="anime-episodes">Unknown</span></li>
+                                <li><strong>Aired:</strong> <span id="anime-aired">Unknown</span></li>
+                                <li><strong>Studio:</strong> <span id="anime-studio">Unknown</span></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3>Where to Watch</h3>
+                            <div class="read-links watch-links">
+                                <a href="#" class="read-btn watch-btn">Watch Now</a>
+                                <a href="#" class="buy-btn">Buy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="manga-chapters anime-episodes">
+                    <h3>Episodes</h3>
+                    <ul class="chapter-list episode-list" id="episode-list">
+                        <li class="chapter-loading episode-loading">Loading episodes...</li>
+                    </ul>
+                </div>
+                
+                <div class="manga-related anime-related">
+                    <h3>You might also like</h3>
+                    <div class="related-manga related-anime" id="related-anime">
+                        <p class="loading-text">Loading recommendations...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button id="back-to-top" aria-label="Back to top">↑</button>
+
+    <footer>
+        <p>© 2025 Animanga - Your Anime & Manga Hub</p>
+    </footer>
+</body>
+</html> 

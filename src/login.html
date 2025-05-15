@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animanga - Login</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <div id="page-loader">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
     <nav>
         <div>
             <a href="index.html">Home</a>
@@ -14,6 +20,11 @@
             <a href="manga.html">Manga</a>
         </div>
         <div class="auth-links">
+            <button id="theme-toggle" aria-label="Toggle theme">
+                <span class="theme-icon light">☀️</span>
+                <span class="theme-icon dark">🌙</span>
+                <span class="theme-icon kawaii">🌸</span>
+            </button>
             <a href="login.html">Login</a>
             <a href="signup.html">Signup</a>
         </div>
@@ -22,40 +33,34 @@
     <main>
         <div class="login-container">
             <div class="login-form">
-                <h2>Login to Animanga</h2>
-                <form action="#" method="post">
+                <h2>Login</h2>
+                <form>
                     <div class="form-group">
+                        <input type="email" id="email" required>
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     </div>
                     
                     <div class="form-group">
+                        <input type="password" id="password" required>
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
                     </div>
                     
                     <div class="form-options">
                         <div class="remember-me">
-                            <label for="remember">
-                                <input type="checkbox" id="remember" name="remember">
-                                Remember me
-                            </label>
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
                         </div>
-                        <div class="forgot-password">
-                            <a href="#">Forgot password?</a>
-                        </div>
+                        <a href="#">Forgot Password?</a>
                     </div>
                     
-                    <button type="button" onclick="window.location.href='index.html'">Login</button>
+                    <button type="submit">Login</button>
                     
-                    <div class="signup-prompt">
-                        <p>Don't have an account? <a href="signup.html">Sign up now</a></p>
-                    </div>
+                    <p class="signup-prompt">Don't have an account? <a href="signup.html">Sign up</a></p>
                 </form>
             </div>
         </div>
     </main>
-    
+
     <footer>
         <p>© 2025 Animanga - Your Anime & Manga Hub</p>
     </footer>

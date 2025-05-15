@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animanga - Anime</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="visibility-fix.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <div id="page-loader">
+        <div class="spinner"></div>
+        <p>Loading Anime...</p>
+    </div>
+
     <nav>
         <div>
             <a href="index.html">Home</a>
@@ -14,88 +21,181 @@
             <a href="manga.html">Manga</a>
         </div>
         <div class="auth-links">
+            <button id="theme-toggle" aria-label="Toggle theme">
+                <span class="theme-icon light">☀️</span>
+                <span class="theme-icon dark">🌙</span>
+                <span class="theme-icon kawaii">🌸</span>
+            </button>
             <a href="login.html">Login</a>
             <a href="signup.html">Signup</a>
         </div>
     </nav>
 
     <main>
-        <h1>Animanga</h1>
-
+        <h1>Anime</h1>
+        
         <div class="sections">
-            <div class="popular-section">
-                <h2>Popular Anime of All Time</h2>
+            <div class="popular-section" data-content-type="anime">
+                <div class="section-header">
+                    <h2>Popular Anime of All Time</h2>
+                    <a href="#" class="view-all-link">View All</a>
+                </div>
                 <div class="popular-list">
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/EVA.jpg" alt="Neon Genesis Evangelion" style="width: 100%;">
+                        <div class="category-tag">Mecha</div>
+                        <div class="image-box" data-title="Neon Genesis Evangelion">
+                            <img src="../Res/Animepics/EVA.jpg" alt="Neon Genesis Evangelion">
                         </div>
                         <div class="content">
                             <h2>Neon Genesis Evangelion</h2>
                             <p>Rating: 8.5</p>
                             <p>Genre: Mecha, Drama</p>
+                            <div>
+                                <span class="badge classic">Classic</span>
+                                <span class="badge top">Top 10</span>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/demon.jpg" alt="Demon Slayer" style="width: 100%;">
+                        <div class="category-tag">Fantasy</div>
+                        <div class="image-box" data-title="Demon Slayer">
+                            <img src="../Res/Animepics/demon.jpg" alt="Demon Slayer">
                         </div>
                         <div class="content">
                             <h2>Demon Slayer</h2>
                             <p>Rating: 8.6</p>
                             <p>Genre: Action, Fantasy</p>
+                            <div>
+                                <span class="badge top">Top 10</span>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/Note.jpg" alt="Death Note" style="width: 100%;">
+                        <div class="category-tag">Mystery</div>
+                        <div class="image-box" data-title="Death Note">
+                            <img src="../Res/Animepics/Note.jpg" alt="Death Note">
                         </div>
                         <div class="content">
                             <h2>Death Note</h2>
                             <p>Rating: 9.0</p>
                             <p>Genre: Mystery, Thriller</p>
+                            <div>
+                                <span class="badge top">Top 10</span>
+                                <span class="badge classic">Classic</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="popular-section">
-                <h2>Hot Anime Right Now</h2>
+            <div class="popular-section" data-content-type="anime">
+                <div class="section-header">
+                    <h2>Trending This Season</h2>
+                    <a href="#" class="view-all-link">View All</a>
+                </div>
                 <div class="popular-list">
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/Soloanime.jpg" alt="Solo Leveling" style="width: 100%;">
+                        <div class="category-tag">Action</div>
+                        <div class="image-box" data-title="Solo Leveling S2">
+                            <img src="../Res/Animepics/solo.jpg" alt="Solo Leveling S2">
                         </div>
                         <div class="content">
                             <h2>Solo Leveling S2</h2>
                             <p>Rating: 9.1</p>
                             <p>Genre: Action, Fantasy</p>
+                            <div>
+                                <span class="badge new">New</span>
+                                <span class="badge top">Top 10</span>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/demon.jpg" alt="Demon Slayer" style="width: 100%;">
+                        <div class="category-tag">Fantasy</div>
+                        <div class="image-box" data-title="Demon Slayer">
+                            <img src="../Res/Animepics/demon.jpg" alt="Demon Slayer">
                         </div>
                         <div class="content">
                             <h2>Demon Slayer</h2>
                             <p>Rating: 8.6</p>
                             <p>Genre: Action, Fantasy</p>
+                            <div>
+                                <span class="badge new">New Season</span>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="image-box">
-                            <img src="../Res/Animepics/Attackanime.jpg" alt="Attack on Titan" style="width: 100%;">
+                        <div class="category-tag">Drama</div>
+                        <div class="image-box" data-title="Attack on Titan">
+                            <img src="../Res/Animepics/titan.jpg" alt="Attack on Titan">
                         </div>
                         <div class="content">
                             <h2>Attack on Titan</h2>
                             <p>Rating: 9.1</p>
                             <p>Genre: Action, Drama</p>
+                            <div>
+                                <span class="badge top">Top 10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="popular-section" data-content-type="anime">
+                <div class="section-header">
+                    <h2>Classic Anime</h2>
+                    <a href="#" class="view-all-link">View All</a>
+                </div>
+                <div class="popular-list">
+                    <div class="card">
+                        <div class="category-tag">Adventure</div>
+                        <div class="image-box" data-title="Dragon Ball Z">
+                            <img src="../Res/Animepics/dbz.jpg" alt="Dragon Ball Z">
+                        </div>
+                        <div class="content">
+                            <h2>Dragon Ball Z</h2>
+                            <p>Rating: 8.7</p>
+                            <p>Genre: Action, Adventure</p>
+                            <div>
+                                <span class="badge classic">Classic</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="category-tag">Adventure</div>
+                        <div class="image-box" data-title="Naruto">
+                            <img src="../Res/Animepics/naruto.jpg" alt="Naruto">
+                        </div>
+                        <div class="content">
+                            <h2>Naruto</h2>
+                            <p>Rating: 8.3</p>
+                            <p>Genre: Action, Adventure</p>
+                            <div>
+                                <span class="badge classic">Classic</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="category-tag">Adventure</div>
+                        <div class="image-box" data-title="Full Metal Alchemist">
+                            <img src="../Res/Animepics/fma.jpg" alt="Full Metal Alchemist">
+                        </div>
+                        <div class="content">
+                            <h2>Full Metal Alchemist</h2>
+                            <p>Rating: 9.2</p>
+                            <p>Genre: Action, Adventure</p>
+                            <div>
+                                <span class="badge classic">Classic</span>
+                                <span class="badge top">Top 10</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <button id="back-to-top" aria-label="Back to top">↑</button>
+
     <footer>
         <p>© 2025 Animanga - Your Anime & Manga Hub</p>
     </footer>
