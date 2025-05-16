@@ -980,6 +980,8 @@ function displayMangaDetails(title) {
     
     
     document.getElementById('manga-image').classList.add('floating'); // Assuming 'floating' class exists
+
+    document.getElementById('manga-read-btn').href = `https://mangareader.to/search?keyword=${title}`;
     
     const chapterList = document.getElementById('chapter-list');
     chapterList.innerHTML = ''; // Clear previous
@@ -994,7 +996,7 @@ function displayMangaDetails(title) {
                 <span class="chapter-number">Chapter ${chapter.number}</span>
                 <span class="chapter-title">${chapter.title}</span>
                 <span class="chapter-date">${chapter.date}</span>
-                <a href="https://mangareader.to/" class="read-chapter-btn">Read</a>
+                <a href="https://mangareader.to/search?keyword=${title}" class="read-chapter-btn">Read</a>
             `;
             chapterList.appendChild(li);
         });
@@ -1304,6 +1306,8 @@ function displayAnimeDetails(title) {
 
     document.getElementById('anime-image').classList.add('floating');
 
+    document.getElementById('anime-watch-btn').href = `https://hianimez.to/search?keyword=${title}`;
+
     const episodeListEl = document.getElementById('episode-list');
     episodeListEl.innerHTML = '';
     if (anime.episodeList && anime.episodeList.length > 0) {
@@ -1316,7 +1320,7 @@ function displayAnimeDetails(title) {
                 <span class="episode-number">Episode ${ep.number}</span>
                 <span class="episode-title">${ep.title}</span>
                 <span class="episode-date">${ep.airDate}</span>
-                <a href="https://hianimez.to/" class="watch-episode-btn">Watch</a>
+                <a href="https://hianimez.to/search?keyword=${title}" class="watch-episode-btn">Watch</a>
             `;
             episodeListEl.appendChild(li);
         });
