@@ -299,6 +299,8 @@ function handleImageLoading() {
         }
 
         const originalSrc = img.src;
+        console.log(`Processing image: ${originalSrc}`);
+
         const imgBox = img.closest('.image-box');
         if (imgBox) {
             imgBox.dataset.title = img.alt || 'Image';
@@ -1018,7 +1020,7 @@ const animeDetailsData = {
         title: 'Solo Leveling S2', 
         rating: 9.1, 
         genre: 'Action, Adventure, Fantasy',
-        image: '../Res/Animepics/Soloanime.jpg',
+        image: '../Res/Animepics/SoloLvl.jpg',
         synopsis: 'Second season of the hit anime following Sung Jin-Woo as he continues his journey from being the weakest hunter to the strongest solo leveler.',
         status: 'Ongoing', 
         episodes: 12, 
