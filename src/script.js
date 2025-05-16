@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         initializeScrollAnimations(); // Consolidated from setupAnimations and setupScrollEffects
     }, 150); // Fixed small delay
+
+    initializePasswordStrengthMeter(); // Call password strength meter initialization
 });
 
 function hidePageLoader() {
@@ -695,12 +697,175 @@ function createPasswordStrengthMeter(passwordInput) {
     strengthMeterContainer.className = 'password-strength';
     strengthMeterContainer.innerHTML = `
         <div class="strength-meter">
-            <div class="strength-meter-fill"></div>
+            <div class="strength-meter-fill" style="width: 0%"></div>
         </div>
         <div class="strength-text">Password strength: <span>Empty</span></div>
     `;
     passwordGroup.appendChild(strengthMeterContainer);
-    updatePasswordStrength(0); // Initialize
+    
+    // Add responsive CSS directly to ensure it works
+    const meterStyles = document.createElement('style');
+    meterStyles.textContent = `
+        .password-strength {
+            width: 100%;
+            margin-top: 8px;
+            margin-bottom: 15px;
+        }
+        .strength-meter {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            transition: height 0.2s ease;
+        }
+        .strength-meter-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease-out, background-color 0.5s ease;
+            width: 0%;
+            background-color: #ddd;
+        }
+        .strength-text {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .strength-text span {
+            font-weight: bold;
+        }
+        @media (max-width: 576px) {
+            .strength-meter {
+                height: 5px;
+            }
+            .strength-text {
+                font-size: 11px;
+            }
+        }
+    `;
+    document.head.appendChild(meterStyles);
+    
+    updatePasswordStrength(0); // Initialize with empty state
+}
+
+function calculatePasswordStrength(password) {
+    if (!password) return 0;
+    
+    let strength = 0;
+    
+    // Length check (improved)
+    if (password.length >= 8) strength += 1;
+    if (password.length >= 12) strength += 0.5;
+    
+    // Complexity checks
+    if (/[A-Z]/.test(password)) strength += 1; // Uppercase
+    if (/[a-z]/.test(password)) strength += 1; // Lowercase
+    if (/[0-9]/.test(password)) strength += 1; // Numbers
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1; // Special characters
+    
+    // Extra points for mixed character types
+    const hasMultipleTypes = 
+        (/[A-Z]/.test(password) ? 1 : 0) +
+        (/[a-z]/.test(password) ? 1 : 0) +
+        (/[0-9]/.test(password) ? 1 : 0) +
+        (/[^A-Za-z0-9]/.test(password) ? 1 : 0);
+        
+    if (hasMultipleTypes >= 3) strength += 0.5;
+    
+    // Cap at 5
+    return Math.min(5, strength);
+}
+
+function updatePasswordStrength(strengthValue) {
+    let strength = typeof strengthValue === 'string' ? 
+        calculatePasswordStrength(strengthValue) : strengthValue;
+    
+    const strengthFill = document.querySelector('.strength-meter-fill');
+    const strengthText = document.querySelector('.strength-text span');
+    if (!strengthFill || !strengthText) return;
+
+    // Calculate percentage for visual fill (rounded to nearest 5%)
+    const percentage = Math.round((strength / 5) * 100 / 5) * 5;
+    
+    // Set width with animation
+    strengthFill.style.width = `${percentage}%`;
+
+    // Define text and colors
+    let text, color;
+    if (strength === 0) { 
+        text = 'Empty'; 
+        color = '#ddd'; 
+    } else if (strength <= 2) { 
+        text = 'Weak'; 
+        color = '#e74c3c'; // Red
+    } else if (strength <= 3) { 
+        text = 'Medium'; 
+        color = '#f39c12'; // Orange
+    } else if (strength <= 4) { 
+        text = 'Good'; 
+        color = '#3498db'; // Blue
+    } else { 
+        text = 'Strong'; 
+        color = '#2ecc71'; // Green
+    }
+    
+    // Apply styles and text
+    strengthFill.style.backgroundColor = color;
+    strengthText.textContent = text;
+    strengthText.style.color = color;
+    
+    // Add subtle animation
+    strengthFill.style.transition = 'width 0.5s ease-out, background-color 0.5s ease';
+    setTimeout(() => {
+        strengthFill.classList.add('animated');
+    }, 10);
+}
+
+function validateInput(input, formType) {
+    const errorSpan = input.parentElement.querySelector('.error-message');
+    let message = '';
+    let isValid = true;
+    const value = input.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    switch (input.id) {
+        case 'name':
+            if (value === '') message = 'Name is required.';
+            else if (value.length < 3) message = 'Name must be at least 3 characters.';
+            break;
+        case 'email':
+            if (value === '') message = 'Email is required.';
+            else if (!emailRegex.test(value)) message = 'Please enter a valid email.';
+            break;
+        case 'password':
+            if (value === '') {
+                message = 'Password is required.';
+                if (formType === 'signup') updatePasswordStrength(0); // Reset strength meter
+            } else if (formType === 'signup') {
+                if (value.length < 8) message = 'Password must be at least 8 characters.';
+                else {
+                    const strength = calculatePasswordStrength(value);
+                    updatePasswordStrength(strength); // Update meter
+                    if (strength < 3) message = 'Password is too weak. Add numbers, symbols or uppercase letters.';
+                }
+            }
+            break;
+        case 'confirm-password':
+            if (formType === 'signup') {
+                const password = document.getElementById('password').value;
+                if (value === '') message = 'Please confirm your password.';
+                else if (value !== password) message = 'Passwords do not match.';
+            }
+            break;
+    }
+
+    if (message) isValid = false;
+    errorSpan.textContent = message;
+    input.classList.toggle('input-error', !isValid);
+    return isValid;
 }
 
 function calculatePasswordStrength(password) {
@@ -1200,3 +1365,134 @@ if (window.location.pathname.includes('anime-detail.html')) {
         }
     });
 }
+
+function initializePasswordStrengthMeter() {
+    const passwordInput = document.getElementById('password');
+    if (!passwordInput) return;
+    
+    // Create strength meter elements if they don't exist
+    const passwordContainer = passwordInput.parentElement;
+    let meterContainer = document.querySelector('.strength-meter-container');
+    
+    if (!meterContainer) {
+        // Create the meter container and elements
+        meterContainer = document.createElement('div');
+        meterContainer.className = 'strength-meter-container';
+        
+        meterContainer.innerHTML = `
+            <div class="strength-meter">
+                <div class="strength-meter-fill"></div>
+            </div>
+            <div class="strength-text">Password strength: <span>Empty</span></div>
+        `;
+        
+        // Insert after the password input
+        passwordInput.insertAdjacentElement('afterend', meterContainer);
+        
+        // Add necessary CSS directly to ensure it works
+        const style = document.createElement('style');
+        style.textContent = `
+            .strength-meter-container {
+                width: 100%;
+                margin-top: 8px;
+                margin-bottom: 16px;
+            }
+            .strength-meter {
+                height: 6px;
+                background-color: #e0e0e0;
+                border-radius: 3px;
+                overflow: hidden;
+                margin-bottom: 5px;
+            }
+            .strength-meter-fill {
+                height: 100%;
+                width: 0%;
+                border-radius: 3px;
+                transition: width 0.3s ease, background-color 0.3s ease;
+            }
+            .strength-text {
+                font-size: 14px;
+                color: #666;
+            }
+            .strength-text span {
+                font-weight: bold;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Add event listener for password input
+    passwordInput.addEventListener('input', function() {
+        updatePasswordStrength(this.value);
+    });
+    
+    // Initial state
+    updatePasswordStrength('');
+}
+
+function calculatePasswordStrength(password) {
+    if (!password) return 0;
+    
+    let score = 0;
+    
+    // Length check
+    if (password.length >= 8) score += 25;
+    if (password.length >= 12) score += 15;
+    
+    // Character type checks
+    if (/[A-Z]/.test(password)) score += 15;  // Uppercase
+    if (/[a-z]/.test(password)) score += 10;  // Lowercase
+    if (/[0-9]/.test(password)) score += 15;  // Numbers
+    if (/[^A-Za-z0-9]/.test(password)) score += 20; // Special chars
+    
+    return Math.min(100, score);
+}
+
+function updatePasswordStrength(password) {
+    const strengthMeterFill = document.querySelector('.strength-meter-fill');
+    const strengthText = document.querySelector('.strength-text span');
+    
+    if (!strengthMeterFill || !strengthText) return;
+    
+    const score = calculatePasswordStrength(password);
+    
+    // Update the meter fill width
+    strengthMeterFill.style.width = `${score}%`;
+    
+    // Determine text and color based on score
+    let text, color;
+    
+    if (password === '') {
+        text = 'Empty';
+        color = '#ccc';
+    } else if (score < 40) {
+        text = 'Weak';
+        color = '#ff4d4d'; // Red
+    } else if (score < 70) {
+        text = 'Medium';
+        color = '#ffa64d'; // Orange
+    } else if (score < 85) {
+        text = 'Good';
+        color = '#2db7f5'; // Blue
+    } else {
+        text = 'Strong';
+        color = '#4caf50'; // Green
+    }
+    
+    // Update text and color
+    strengthText.textContent = text;
+    strengthText.style.color = color;
+    strengthMeterFill.style.backgroundColor = color;
+    
+    console.log(`Password strength updated: ${score}%, ${text}`); // Debug
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializePasswordStrengthMeter();
+    
+    // Also make sure to call it explicitly for the signup page
+    if (document.querySelector('#signup-form')) {
+        initializePasswordStrengthMeter();
+    }
+});
