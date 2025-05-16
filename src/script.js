@@ -177,7 +177,7 @@ function getPotentialImagePaths(imgElement) {
     else if (isManga) imageTypeFolder = 'Mangapics';
 
     const paths = [];
-    const commonNames = ['demon', 'AOT', 'Attackanime', 'Berserk', 'EVA', 'Note', 'SoloLvl', 'Soloanime', 'Vagapond', 'one-punch-man'];
+    const commonNames = ['demon', 'AOT', 'Attackanime', 'Berserk', 'EVA', 'Note', 'SoloLvl', 'Soloanime', 'Vagapond', 'one punch man'];
 
     // Original name based on type
     if (imageTypeFolder !== 'unknown') {
@@ -1100,7 +1100,7 @@ const defaultAnimeData = (title) => ({
     title: title, 
     rating: 0, 
     genre: 'N/A', 
-    image: '../Res/Animepics/placeholder.jpg', 
+    image: '../Res/Animepics/EVA.jpg', 
     synopsis: 'No detailed information available.', 
     status: 'Unknown', 
     episodes: 'N/A', 
