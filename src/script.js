@@ -994,7 +994,7 @@ function displayMangaDetails(title) {
                 <span class="chapter-number">Chapter ${chapter.number}</span>
                 <span class="chapter-title">${chapter.title}</span>
                 <span class="chapter-date">${chapter.date}</span>
-                <a href="#" class="read-chapter-btn">Read</a>
+                <a href="https://mangareader.to/" class="read-chapter-btn">Read</a>
             `;
             chapterList.appendChild(li);
         });
@@ -1316,7 +1316,7 @@ function displayAnimeDetails(title) {
                 <span class="episode-number">Episode ${ep.number}</span>
                 <span class="episode-title">${ep.title}</span>
                 <span class="episode-date">${ep.airDate}</span>
-                <a href="#" class="watch-episode-btn">Watch</a>
+                <a href="https://hianimez.to/" class="watch-episode-btn">Watch</a>
             `;
             episodeListEl.appendChild(li);
         });
